@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/01/30 22:31:44 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/05 22:27:07 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,55 +19,73 @@ void    *say_hello(void *arg)
     printf("Hello\n");
     if (!arg)
         printf("Bye...\n");
-    pthread_mutex_unlock(arg);
+    //pthread_mutex_unlock(arg);
+    printf()
     return (NULL);
 }
 
-int    create_philosophers(char **argv)
+int    create_philosophers(t_data *data)
 {
-    pthread_t       *philosophers;
     int             i;
-    int             n;
     int             ret;
-    pthread_mutex_t lock;
-    if (pthread_mutex_init(&lock, NULL) != 0)
-    {
-        printf("Mutex initialization failed.\n");
-        return (1);
-    }
-    n = atoi(argv[1]);
-    philosophers = malloc(n * sizeof(pthread_t));
-    if (!philosophers)
+    
+    data->philos = malloc(data->info->n * sizeof(t_philo));
+    if (!data->philos)
         return (1);
     i = 0;
-    while (i < n)
+    while (i < data->info->n)
     {
-        printf("Creating %d\n", i);
-        ret = pthread_create(&philosophers[i], NULL, say_hello, &lock);
+        if (pthread_mutex_init(&data->philos[i].fork, NULL) != 0)
+        {
+        printf("Mutex initialization failed.\n");
+        free(data->philos);
+        return (1);
+        }
+        ret = pthread_create(&data->philos[i].id, NULL, say_hello, &data->philos[i].fork);
         if (ret != 0)
             printf("Fail\n");
         i++;
     }
     while (i >= 0)
     {
-        pthread_join(philosophers[i], NULL);
+        pthread_join(data->philos[i].id, NULL);
+        pthread_mutex_destroy(&data->philos[i].fork);
         i--;
     }
-    free(philosophers);
-    pthread_mutex_destroy(&lock);
+    free(data->philos);
     return (0);
-    
 }
 
 int	main(int argc, char **argv)
 {
+    t_data  *data;
+
 	if (validate(argc, argv) != 0)
 		exit(1);
-    create_philosophers(argv);
+    data = malloc(1 * sizeof(t_data));
+    if (!data)
+        exit(1);
+    data->info = malloc(1 * sizeof(t_info));
+    if (!data->info)
+    {
+        free(data);
+        exit(1);
+    }
+    set_info(data->info, argc, argv);
+    create_philosophers(data);
     exit(0);
 }
 /*
 - Idea: estructura con la información de argv
-- Los filosofos son estructuras o directamente hilos?
+- Los filosofos son hilos
 
+- Cada filósofo tiene: identificación (pthread_t), last time eat, eating times available, state, fork(mutex)
+
+philo
+number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+memset, malloc, free
+write, printf
+usleep, gettimeofday, 
+pthread_create, pthread_detach, pthread_join, 
+pthread_mutex_init, pthread_mutex_destroy, pthread_mutex_lock, pthread_mutex_unlock
 */

@@ -1,6 +1,6 @@
 NAME        := philo
 
-SRC			:= main.c utils.c validate.c
+SRC			:= main.c message.c utils.c validate.c
 
 OBJ			:= $(SRC:%.c=%.o)
 

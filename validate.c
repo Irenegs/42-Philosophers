@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 21:27:57 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/01/30 22:12:24 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:52:33 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,16 @@ int	validate(int argc, char **argv)
 		i++;
 	}
 	return (0);
+}
+
+void    set_info(t_info *info, int argc, char **argv)
+{
+    info->n = ft_atoi(argv[1]);
+    info->die = ft_atoi(argv[2]);
+    info->eat = ft_atoi(argv[3]);
+    info->sleep = ft_atoi(argv[4]);
+    if (argc == 6)
+        info->times = ft_atoi(argv[5]);
+    else
+        info->times = -1;
 }
