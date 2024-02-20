@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   message.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 16:52:36 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/04 16:56:33 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:19:22 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	display_message(int philo, int action)
+void	display_message(t_philo *philo, int action)
 {
-	printf("TIMESTAMP %d", philo);
-	if (action == 0)
-		printf("TIMESTAMP %d died\n", philo);
-	else if (action == 1)
-		printf("TIMESTAMP %d has taken a fork\n", philo);
-	else if (action == 2)
-		printf("TIMESTAMP %d is eating\n", philo);
-	else if (action == 3)
-		printf("TIMESTAMP %d is sleeping\n", philo);
-	else if (action == 4)
-		printf("TIMESTAMP %d is thinking\n", philo);
+	if (action == DEAD)
+		printf("%ld %d died\n", since(philo->t0), philo->i);
+	else if (action == FORK)
+		printf("%ld %d has taken a fork\n", since(philo->t0), philo->i);
+	else if (action == EAT)
+		printf("%ld %d is eating\n", since(philo->t0), philo->i);
+	else if (action == SLEEP)
+		printf("%ld %d is sleeping\n", since(philo->t0), philo->i);
+	else if (action == THINK)
+		printf("%ld %d is thinking\n", since(philo->t0), philo->i);
 }

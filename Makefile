@@ -1,11 +1,12 @@
 NAME        := philo
 
-SRC			:= main.c message.c utils.c validate.c
+SRC			:= living.c main.c message.c setting.c time.c utils.c validate.c
 
 OBJ			:= $(SRC:%.c=%.o)
 
 CC          := gcc 
-CFLAGS      := -lpthread -Wall -Wextra -Werror
+CFLAGS      := -Wall -Wextra -Werror
+# -lpthread
 #-fsanitize=address -g3
 
 RM          := rm -f
@@ -16,7 +17,6 @@ $(NAME): $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
-
 
 clean:
 	$(RM) $(OBJ)
