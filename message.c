@@ -6,22 +6,30 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 16:52:36 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 22:19:22 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:41:42 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	display_message(t_philo *philo, int action)
+void	display_message(t_data *data, int i , int action)
 {
+	long time;
+	
+	time = since(data->philos[i].t0);
 	if (action == DEAD)
-		printf("%ld %d died\n", since(philo->t0), philo->i);
-	else if (action == FORK)
-		printf("%ld %d has taken a fork\n", since(philo->t0), philo->i);
-	else if (action == EAT)
-		printf("%ld %d is eating\n", since(philo->t0), philo->i);
-	else if (action == SLEEP)
-		printf("%ld %d is sleeping\n", since(philo->t0), philo->i);
-	else if (action == THINK)
-		printf("%ld %d is thinking\n", since(philo->t0), philo->i);
+		printf("%ld %d died.\n", time, i + 1);
+	if (data->info->dead == 0)
+	{
+		if (action == FORK)
+			printf("%ld %d has taken a fork.\n", time, i + 1);
+		else if (action == EAT)
+			printf("%ld %d is eating.\n", time, i + 1);
+		else if (action == SLEEP)
+			printf("%ld %d is sleeping.\n", time, i + 1);
+		else if (action == THINK)
+			printf("%ld %d is thinking.\n", time, i + 1);
+		else if (action == LEAVES_FORK)
+			printf("%ld %d leaves forks.\n", time, i + 1);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 21:27:57 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 08:45:33 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:03:40 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	validate(int argc, char **argv)
 	
 	if (argc < 5 || argc > 6)
 	{
-		exit(1);
+		return (1);
 	}
 	i = 1;
 	while (i < argc)

@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:18:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 22:19:28 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:56:03 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,7 @@ long int	since(long int t0)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000 - t0);
 }
 
-int	philo_died(t_philo philo)
-{
-	if (since(philo.last_meal) < philo.t_die)
-		return (0);
-	return (1);
-}
-
 void	suspend(int time)
 {
-	usleep(time * 1000);
+	usleep((useconds_t)(time * 1000));
 }
