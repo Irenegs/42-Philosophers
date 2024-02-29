@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/27 20:57:22 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:03:46 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int  end_simulation(t_data *data)
+{
+    pthread_mutex_lock(&(data->info->mut));
+    if (data->info->dead == 0 && data->info->meals > 0)
+    {
+        pthread_mutex_unlock(&(data->info->mut));
+        return (0);
+    }
+    pthread_mutex_unlock(&(data->info->mut));
+    return (1);
+}
 
 void    *live(void *arg)
 {
@@ -24,7 +36,7 @@ void    *live(void *arg)
     if (philo->i % 2 == 1)
             usleep(200);
     data = ((t_data *)(philo->data));
-    while (data->info->dead == 0 && data->info->meals > 0)
+    while (end_simulation(data) == 0)
     {
         eating(data, philo->i);
         if (data->info->dead == 0)
@@ -46,19 +58,15 @@ int    create_philosophers(t_data *data)
     i = 0;
     while (i < data->info->n)
     {
-        data->philos[i].fork = malloc(1 * sizeof(t_fork));
-        pthread_mutex_init(&(data->philos[i].fork->mut), NULL);
+        pthread_mutex_init(&(data->philos[i].mut), NULL);
         set_philo(data, i);
         ret = pthread_create(&data->philos[i].id, NULL, live, &(data->philos[i]));
         if (ret != 0)
             printf("Fail\n");
         i++;
     }
-    while (i >= 0)
-        pthread_join(data->philos[i--].id, NULL);
-    i = 0;
-    while (i < data->info->n)
-        free(data->philos[i++].fork);
+    while (i > 0)
+        pthread_join(data->philos[--i].id, NULL);
     free(data->philos);
     return (0);
 }
@@ -89,6 +97,7 @@ int	main(int argc, char **argv)
     set_info(data->info, argc, argv);
     if (create_philosophers(data) != 0)
         return(4);
+    pthread_mutex_destroy(&(data->info->mut));
     free(data->info);
     free(data);
     return(0);

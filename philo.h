@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/27 20:55:58 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:03:53 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,13 @@ typedef struct s_info
 	int times;
 	int dead;
 	int	meals;
-}		t_info;
-
-typedef struct s_fork
-{
 	pthread_mutex_t	mut;
-	int				used;
-}	t_fork;
+}		t_info;
 
 typedef struct s_philo
 {
 	pthread_t	id;
-	t_fork		*fork;
+	pthread_mutex_t	mut;
 	int			last_meal;
 	int			meals_av;
 	int			i;
@@ -66,9 +61,10 @@ int		validate(int argc, char **argv);
 void	display_message(t_data *data, int i , int action);
 void	set_info(t_info *info, int argc, char **argv);
 void	set_philo(t_data *data, int i);
-void	suspend(int time);
+void	suspend(t_data *data, int action);
 long int	since(long int t0);
 long int	now(void);
 void    eating(t_data *data, int i);
 void    sleeping(t_data *data, int i);
+int  end_simulation(t_data *data);
 #endif

@@ -4,7 +4,7 @@ SRC			:= living.c main.c message.c setting.c time.c utils.c validate.c
 
 OBJ			:= $(SRC:%.c=%.o)
 
-CC          := gcc 
+CC          := gcc -fsanitize=thread -g
 CFLAGS      := -Wall -Wextra -Werror
 # -lpthread
 #-fsanitize=address -g3

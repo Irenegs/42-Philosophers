@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   message.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 16:52:36 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/27 20:41:42 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:04:05 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	display_message(t_data *data, int i , int action)
 	time = since(data->philos[i].t0);
 	if (action == DEAD)
 		printf("%ld %d died.\n", time, i + 1);
-	if (data->info->dead == 0)
+	if (end_simulation(data) == 0)
 	{
 		if (action == FORK)
 			printf("%ld %d has taken a fork.\n", time, i + 1);

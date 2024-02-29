@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:18:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/27 20:56:03 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:01:43 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,17 @@ long int	since(long int t0)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000 - t0);
 }
 
-void	suspend(int time)
+void	suspend(t_data *data, int action)
 {
-	usleep((useconds_t)(time * 1000));
+	useconds_t	usec;
+	
+	pthread_mutex_lock(&(data->info->mut));
+	if (action == EAT)
+		usec = data->info->t_eat * 1000;
+	else if (action == SLEEP)
+		usec = data->info->t_sleep * 1000;
+	else
+		usec = data->info->t_die * 1000;
+	pthread_mutex_unlock(&(data->info->mut));
+	usleep(usec);
 }

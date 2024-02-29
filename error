@@ -1,0 +1,66 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=11873)
+  Atomic read of size 1 at 0x7b3c00000058 by thread T1 (mutexes: write M1):
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:32 (philo+0x1629)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+  Previous write of size 1 at 0x7b3c00000058 by main thread:
+    #0 pthread_mutex_init ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1227 (libtsan.so.0+0x4bee1)
+    #1 create_philosophers /home/irene/Materiales/Informática/42/42-Philosophers/main.c:61 (philo+0x1c6a)
+    #2 main /home/irene/Materiales/Informática/42/42-Philosophers/main.c:98 (philo+0x1ea0)
+
+  Location is heap block of size 240 at 0x7b3c00000000 allocated by main thread:
+    #0 malloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:655 (libtsan.so.0+0x31c57)
+    #1 create_philosophers /home/irene/Materiales/Informática/42/42-Philosophers/main.c:55 (philo+0x1beb)
+    #2 main /home/irene/Materiales/Informática/42/42-Philosophers/main.c:98 (philo+0x1ea0)
+
+  Mutex M1 (0x7b3c00000008) created at:
+    #0 pthread_mutex_init ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1227 (libtsan.so.0+0x4bee1)
+    #1 create_philosophers /home/irene/Materiales/Informática/42/42-Philosophers/main.c:61 (philo+0x1c6a)
+    #2 main /home/irene/Materiales/Informática/42/42-Philosophers/main.c:98 (philo+0x1ea0)
+
+  Thread T1 (tid=11875, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
+    #1 create_philosophers /home/irene/Materiales/Informática/42/42-Philosophers/main.c:63 (philo+0x1cea)
+    #2 main /home/irene/Materiales/Informática/42/42-Philosophers/main.c:98 (philo+0x1ea0)
+
+SUMMARY: ThreadSanitizer: data race /home/irene/Materiales/Informática/42/42-Philosophers/living.c:32 in eating
+==================
+==================
+WARNING: ThreadSanitizer: lock-order-inversion (potential deadlock) (pid=11873)
+  Cycle in lock order graph: M3 (0x7b3c000000a8) => M1 (0x7b3c00000008) => M2 (0x7b3c00000058) => M3
+
+  Mutex M1 acquired here while holding mutex M3 in thread T3:
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:30 (philo+0x15ee)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+  Mutex M3 previously acquired by the same thread here:
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:27 (philo+0x1586)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+  Mutex M2 acquired here while holding mutex M1 in thread T1:
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:32 (philo+0x1629)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+  Mutex M1 previously acquired by the same thread here:
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:27 (philo+0x1586)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+  Mutex M3 acquired here while holding mutex M2 in thread T2:
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:32 (philo+0x1629)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+  Mutex M2 previously acquired by the same thread here:
+    #0 pthread_mutex_lock ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:4240 (libtsan.so.0+0x53908)
+    #1 eating /home/irene/Materiales/Informática/42/42-Philosophers/living.c:27 (philo+0x1586)
+    #2 live /home/irene/Materiales/Informática/42/42-Philosophers/main.c:41 (philo+0x1ae2)
+
+SUMMARY: ThreadSanitizer: lock-order-inversion (potential deadlock) /home/irene/Materiales/Informática/42/42-Philosophers/living.c:30 in eating
+==================
+ThreadSanitizer: reported 2 warnings

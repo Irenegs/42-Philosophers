@@ -1,4 +1,6 @@
 {
 	"editor.insertSpaces": false,
-	"editor.comments.insertSpace": false
+	"editor.comments.insertSpace": false,
+	"editor.fontSize": 16,
+	"files.autoSave": "afterDelay"
 }
