@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 20:03:46 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:56:54 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,13 @@ int	main(int argc, char **argv)
     return(0);
 }
 /*
+- no bloquear el mutex: los filósofos intentan (mutex lock) coger el tenedor (y unlock) se setea en 0-1
+- mutex para message
+- pares e impares cogen tenedores  en distinto orden
+- comprobar que no muera mientras come
+- forks %n
+- log timestamp absoluto
+
 pthread_mutex_destroy(&(data->philos[i].fork->mut));
 
 -fsanitize=address -g3 

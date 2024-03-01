@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 20:03:53 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:49:54 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@
 
 typedef struct s_info
 {
-	int	t_sleep;
+	long unsigned int	t0;
+	long unsigned int	t_sleep;
+	long unsigned int	t_eat;
+	long unsigned int	t_die;
 	int	n;
-	int t_eat;
-	int	t_die;
 	int times;
 	int dead;
 	int	meals;
@@ -46,7 +47,10 @@ typedef struct s_philo
 	int			meals_av;
 	int			i;
 	void		*data;
-	long int	t0;
+	long unsigned int	t0;
+	long unsigned int	t_sleep;
+	long unsigned int	t_eat;
+	long unsigned int	t_die;
 }					t_philo;
 
 typedef struct s_data
@@ -58,13 +62,19 @@ typedef struct s_data
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
 int		validate(int argc, char **argv);
-void	display_message(t_data *data, int i , int action);
+
 void	set_info(t_info *info, int argc, char **argv);
 void	set_philo(t_data *data, int i);
+
 void	suspend(t_data *data, int action);
-long int	since(long int t0);
-long int	now(void);
+long unsigned int timestamp(t_data *data);
+long unsigned int	since(long int t0);
+long unsigned int	now(void);
+
 void    eating(t_data *data, int i);
 void    sleeping(t_data *data, int i);
 int  end_simulation(t_data *data);
+
+void	display_message(t_data *data, int i , int action);
+
 #endif

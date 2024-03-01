@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   message.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 16:52:36 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 20:04:05 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:43:25 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+
+
 void	display_message(t_data *data, int i , int action)
 {
 	long time;
 	
-	time = since(data->philos[i].t0);
+	time = timestamp(data);
 	if (action == DEAD)
 		printf("%ld %d died.\n", time, i + 1);
 	if (end_simulation(data) == 0)

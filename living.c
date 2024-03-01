@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   living.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 20:17:42 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:58:03 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@ static void    manage_meals(t_data *data, int i)
     data->info->meals--;
     pthread_mutex_unlock(&(data->info->mut));
 }
-
-void    eating(t_data *data, int i)
+/*
+int take_forks(t_data *data, int i)
 {
-	pthread_mutex_lock(&(data->philos[i].mut));
+    while(1)
+    {
+    }
+}
+*/
+int    eating(t_data *data, int i)
+{
+	
     display_message(data, i, FORK);
     if (i + 1 == data->info->n)
         pthread_mutex_lock(&(data->philos[0].mut));
@@ -43,7 +50,7 @@ void    eating(t_data *data, int i)
     display_message(data, i, LEAVES_FORK);
 }
 
-void    sleeping(t_data *data, int i)
+int    sleeping(t_data *data, int i)
 {
     display_message(data, i, SLEEP);
     if (data->info->t_die <= data->info->t_sleep)
@@ -53,8 +60,9 @@ void    sleeping(t_data *data, int i)
         data->info->dead++;
         pthread_mutex_unlock(&(data->info->mut));
         display_message(data, i, DEAD);
-        return ;
+        return (1);
     }
     suspend(data, SLEEP);
     display_message(data, i, THINK);
+    return (0);
 }

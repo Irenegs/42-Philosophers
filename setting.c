@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 08:45:37 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 19:42:45 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:41:30 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void    set_info(t_info *info, int argc, char **argv)
     }
     info->dead = 0;
     pthread_mutex_init(&(info->mut), NULL);
+    info->t0 = now();
 }
 
 void	set_philo(t_data *data, int i)

@@ -3,16 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:18:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 20:01:43 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:43:08 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long int	now(void)
+long unsigned int timestamp(t_data *data)
+{
+	struct timeval t;
+	
+	gettimeofday(&t, NULL);
+	return (t.tv_sec * 1000 + t.tv_usec / 1000 - data->info->t0);
+}
+
+long unsigned int	now(void)
 {
 	struct timeval	t;
 	
@@ -20,7 +28,7 @@ long int	now(void)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000);
 }
 
-long int	since(long int t0)
+long unsigned int	since(long int t0)
 {
 	struct timeval	t;
 	
