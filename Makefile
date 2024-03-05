@@ -1,6 +1,6 @@
 NAME        := philo
 
-SRC			:= living.c main.c message.c setting.c time.c utils.c validate.c
+SRC			:= living.c main.c message.c setting.c time.c utils.c validate.c death.c
 
 OBJ			:= $(SRC:%.c=%.o)
 

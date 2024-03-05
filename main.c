@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/01 18:56:54 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:44:04 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,33 +32,31 @@ void    *live(void *arg)
     if (!arg)
         return (NULL);
     philo = (t_philo *)arg;
+    //printf("Philo %d sits\n", philo->i + 1);
     philo->t0 = now();
-    if (philo->i % 2 == 1)
-            usleep(200);
     data = ((t_data *)(philo->data));
     while (end_simulation(data) == 0)
     {
-        eating(data, philo->i);
-        if (data->info->dead == 0)
+        if (eating(data, philo->i) == 0)
             sleeping(data, philo->i);
     }
+    printf("Bye %d\n", philo->i + 1);
     return (NULL);
 }
 
-int    create_philosophers(t_data *data)
+void    create_philosophers(t_data *data)
 {
-    int             i;
-    int             ret;
+    int i;
+    int ret;
     
     if (data->info->n == 0)
-        return (0);
+        return ;
     data->philos = malloc(data->info->n * sizeof(t_philo));
     if (!data->philos)
-        return (1);    
+        return ;   
     i = 0;
     while (i < data->info->n)
     {
-        pthread_mutex_init(&(data->philos[i].mut), NULL);
         set_philo(data, i);
         ret = pthread_create(&data->philos[i].id, NULL, live, &(data->philos[i]));
         if (ret != 0)
@@ -68,7 +66,7 @@ int    create_philosophers(t_data *data)
     while (i > 0)
         pthread_join(data->philos[--i].id, NULL);
     free(data->philos);
-    return (0);
+    return ;
 }
 
 /*
@@ -95,20 +93,16 @@ int	main(int argc, char **argv)
         return(3);
     }
     set_info(data->info, argc, argv);
-    if (create_philosophers(data) != 0)
-        return(4);
+    initialize_mutexes(data);
+    create_philosophers(data);
     pthread_mutex_destroy(&(data->info->mut));
     free(data->info);
     free(data);
     return(0);
 }
 /*
-- no bloquear el mutex: los filósofos intentan (mutex lock) coger el tenedor (y unlock) se setea en 0-1
+
 - mutex para message
-- pares e impares cogen tenedores  en distinto orden
-- comprobar que no muera mientras come
-- forks %n
-- log timestamp absoluto
 
 pthread_mutex_destroy(&(data->philos[i].fork->mut));
 

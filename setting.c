@@ -6,11 +6,28 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 08:45:37 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/01 18:41:30 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:40:39 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int initialize_mutexes(t_data *data)
+{
+    int i;
+
+    pthread_mutex_init(&(data->info->mut), NULL);
+    i = 0;
+    data->fork = malloc(data->info->n * sizeof(t_fork));
+    if (!data->fork)
+        return (1);
+    while (i < data->info->n)
+    {
+        pthread_mutex_init(&(data->fork[i].mut), NULL);
+        i++;
+    }
+    return (0);
+}
 
 void    set_info(t_info *info, int argc, char **argv)
 {
@@ -29,14 +46,16 @@ void    set_info(t_info *info, int argc, char **argv)
         info->meals = 1;
     }
     info->dead = 0;
-    pthread_mutex_init(&(info->mut), NULL);
     info->t0 = now();
 }
 
 void	set_philo(t_data *data, int i)
 {
 	data->philos[i].i = i;
-	data->philos[i].last_meal = 0;
+	data->philos[i].last_meal = now();
 	data->philos[i].meals_av = data->info->times;
     data->philos[i].data = data;
+    data->philos[i].t_die = data->info->t_die;
+    data->philos[i].t_sleep = data->info->t_sleep;
+    data->philos[i].t_eat = data->info->t_eat;
 }
