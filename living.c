@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   living.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 20:37:28 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:23:09 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,29 @@ static void    manage_meals(t_data *data, int i)
 
 static void leave_forks(t_data *data, int i)
 {
-    display_message(data, i, LEAVES_FORK);
     data->philos[i].forks = 0;
     pthread_mutex_lock(&(data->fork[i].mut));
     data->fork[i].used = 0;
     pthread_mutex_unlock(&(data->fork[i].mut));
-    pthread_mutex_lock(&(data->fork[i + 1 % data->info->n].mut));
-    data->fork[i + 1 % data->info->n].used = 0;
-	pthread_mutex_unlock(&(data->fork[i + 1 % data->info->n].mut));
+    pthread_mutex_lock(&(data->fork[(i + 1) % data->info->n].mut));
+    data->fork[(i + 1) % data->info->n].used = 0;
+	pthread_mutex_unlock(&(data->fork[(i + 1) % data->info->n].mut));
 }
 
 static void    take_one_fork(t_data *data, int i, int f)
 {
-    pthread_mutex_lock(&(data->fork[(i + f) % data->info->n].mut));
-    if (data->fork[(i + f) % data->info->n].used == 0)
+    pthread_mutex_lock(&(data->fork[f].mut));
+    if (data->fork[f].used == 0)
     {
-        //printf("Fork %d - %d\n", (i + f )% data->info->n, data->fork[(i + f) % data->info->n].used);
-        data->fork[(i + f) % data->info->n].used = 1;
+        data->fork[f].used = 1;
+        pthread_mutex_unlock(&(data->fork[f].mut));
         data->philos[i].forks++;
-        pthread_mutex_unlock(&(data->fork[(i + f) % data->info->n].mut));
         display_message(data, i, FORK);
     }
     else
     {
-        //printf("Waiting %d %d\n", i, 1 + 1 * f);
-        pthread_mutex_unlock(&(data->fork[i + f].mut));
-        usleep(2);
+        pthread_mutex_unlock(&(data->fork[f].mut));
+        usleep(1);
     }
     is_philo_dead(data, i);
 }
@@ -57,10 +54,22 @@ static void    take_one_fork(t_data *data, int i, int f)
 static void take_forks(t_data *data, int i)
 {
     while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
-        take_one_fork(data, i, i % 2);
+        take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
     while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
-        take_one_fork(data, i, i % 2 + 1);
+        take_one_fork(data, i, (i + i % 2) % data->info->n);
 }
+
+/*
+i = 0
+i + 0; i + 1= 0; 1
+
+i = 1
+1 + 1; 1 + 2 = 2; 1
+
+i = 2;
+2; 3
+
+*/
 
 int eating(t_data *data, int i)
 {

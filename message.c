@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   message.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 16:52:36 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 20:09:29 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:47:17 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	display_message(t_data *data, int i , int action)
 			printf("%ld %d is sleeping.\n", time, i + 1);
 		else if (action == THINK)
 			printf("%ld %d is thinking.\n", time, i + 1);
-		else if (action == LEAVES_FORK)
-			printf("%ld %d leaves forks.\n", time, i + 1);
+		//else if (action == LEAVES_FORK)
+		//	printf("%ld %d leaves forks.\n", time, i + 1);
 	}
 }

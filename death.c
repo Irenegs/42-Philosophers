@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:35:29 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 20:12:22 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:52:43 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	philo_died(t_data *data, int i)
 
 void	is_philo_dead(t_data *data, int i)
 {
-	//printf("%lu - %lu\n", data->philos[i].last_meal, data->philos[i].t_die);
 	if (since(data->philos[i].last_meal) > data->philos[i].t_die)
 		philo_died(data, i);
 }
@@ -35,6 +34,5 @@ int  nobody_dead(t_data *data)
     pthread_mutex_lock(&(data->info->mut));
     dead = data->info->dead;
     pthread_mutex_unlock(&(data->info->mut));
-	//printf("Nobody dead: %d\n", dead);
-    return (dead);
+	return (dead);
 }

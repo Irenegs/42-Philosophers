@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 20:44:04 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:50:48 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void    *live(void *arg)
         if (eating(data, philo->i) == 0)
             sleeping(data, philo->i);
     }
-    printf("Bye %d\n", philo->i + 1);
+    //printf("Bye %d\n", philo->i + 1);
     return (NULL);
 }
 
@@ -54,10 +54,12 @@ void    create_philosophers(t_data *data)
     data->philos = malloc(data->info->n * sizeof(t_philo));
     if (!data->philos)
         return ;   
+    i = -1;
+    while (++i < data->info->n)
+        set_philo(data, i);
     i = 0;
     while (i < data->info->n)
     {
-        set_philo(data, i);
         ret = pthread_create(&data->philos[i].id, NULL, live, &(data->philos[i]));
         if (ret != 0)
             printf("Fail\n");
@@ -96,13 +98,18 @@ int	main(int argc, char **argv)
     initialize_mutexes(data);
     create_philosophers(data);
     pthread_mutex_destroy(&(data->info->mut));
+    int i = 0;
+    while (i < data->info->n)
+    {
+        pthread_mutex_destroy(&(data->fork[i].mut));
+        i++;
+    }
+    free(data->fork);
     free(data->info);
     free(data);
     return(0);
 }
 /*
-
-- mutex para message
 
 pthread_mutex_destroy(&(data->philos[i].fork->mut));
 
