@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/09 17:50:48 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/14 18:25:22 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void    *live(void *arg)
     if (!arg)
         return (NULL);
     philo = (t_philo *)arg;
-    //printf("Philo %d sits\n", philo->i + 1);
     philo->t0 = now();
     data = ((t_data *)(philo->data));
     while (end_simulation(data) == 0)
@@ -40,7 +39,6 @@ void    *live(void *arg)
         if (eating(data, philo->i) == 0)
             sleeping(data, philo->i);
     }
-    //printf("Bye %d\n", philo->i + 1);
     return (NULL);
 }
 

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   living.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/09 18:23:09 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/14 19:30:24 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void    manage_meals(t_data *data, int i)
+static void manage_meals(t_data *data, int i)
 {
     if (data->philos[i].meals_av <= 0)
         return ;
@@ -46,30 +46,27 @@ static void    take_one_fork(t_data *data, int i, int f)
     else
     {
         pthread_mutex_unlock(&(data->fork[f].mut));
-        usleep(1);
+        //usleep(1);
     }
     is_philo_dead(data, i);
 }
 
 static void take_forks(t_data *data, int i)
 {
-    while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
-        take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
+    if (i % 2 == 1){
     while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
+    {
+        take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
         take_one_fork(data, i, (i + i % 2) % data->info->n);
+    }
+    }
+    else{
+        while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
+            take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
+        while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
+            take_one_fork(data, i, (i + i % 2) % data->info->n);
+    }
 }
-
-/*
-i = 0
-i + 0; i + 1= 0; 1
-
-i = 1
-1 + 1; 1 + 2 = 2; 1
-
-i = 2;
-2; 3
-
-*/
 
 int eating(t_data *data, int i)
 {
@@ -101,3 +98,13 @@ void sleeping(t_data *data, int i)
     suspend(data->philos[i].t_sleep);
     display_message(data, i, THINK);
 }
+
+/*
+static void take_forks(t_data *data, int i)
+{
+    while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
+        take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
+    while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
+        take_one_fork(data, i, (i + i % 2) % data->info->n);
+}
+*/
