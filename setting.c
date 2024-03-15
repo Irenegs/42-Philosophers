@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 08:45:37 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/09 17:47:52 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/15 16:12:18 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int initialize_mutexes(t_data *data)
 {
     int i;
 
-    pthread_mutex_init(&(data->info->mut), NULL);
+    pthread_mutex_init(&(data->info->death_mut), NULL);
+    pthread_mutex_init(&(data->info->meals_mut), NULL);
     i = 0;
     data->fork = malloc(data->info->n * sizeof(t_fork));
     if (!data->fork)

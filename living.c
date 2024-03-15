@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 19:30:24 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:23:54 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static void manage_meals(t_data *data, int i)
     if (data->philos[i].meals_av <= 0)
         return ;
     data->philos[i].meals_av--;
-    pthread_mutex_lock(&(data->info->mut));
+    pthread_mutex_lock(&(data->info->meals_mut));
     data->info->meals--;
-    pthread_mutex_unlock(&(data->info->mut));
+    pthread_mutex_unlock(&(data->info->meals_mut));
 }
 
 static void leave_forks(t_data *data, int i)
@@ -46,26 +46,17 @@ static void    take_one_fork(t_data *data, int i, int f)
     else
     {
         pthread_mutex_unlock(&(data->fork[f].mut));
-        //usleep(1);
+        usleep(2);
     }
     is_philo_dead(data, i);
 }
 
 static void take_forks(t_data *data, int i)
 {
-    if (i % 2 == 1){
-    while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
-    {
+    while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
         take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
+    while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
         take_one_fork(data, i, (i + i % 2) % data->info->n);
-    }
-    }
-    else{
-        while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
-            take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
-        while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
-            take_one_fork(data, i, (i + i % 2) % data->info->n);
-    }
 }
 
 int eating(t_data *data, int i)
@@ -74,13 +65,13 @@ int eating(t_data *data, int i)
 	if (end_simulation(data) == 1)
         return (1);
     display_message(data, i, EAT);
-    manage_meals(data, i);
     if (since(data->philos[i].last_meal) + data->philos[i].t_eat > data->philos[i].t_die)
     {
         suspend(data->philos[i].t_die - since(data->philos[i].last_meal));
         philo_died(data, i);
         return (1);
     }
+    manage_meals(data, i);
     suspend(data->philos[i].t_eat);
     data->philos[i].last_meal = now();
     leave_forks(data, i);
@@ -97,14 +88,6 @@ void sleeping(t_data *data, int i)
     }
     suspend(data->philos[i].t_sleep);
     display_message(data, i, THINK);
+    if (data->info->n % 2 == 1)
+        suspend(5);
 }
-
-/*
-static void take_forks(t_data *data, int i)
-{
-    while(data->philos[i].forks != 1 && nobody_dead(data) == 0)
-        take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
-    while(data->philos[i].forks != 2 && nobody_dead(data) == 0)
-        take_one_fork(data, i, (i + i % 2) % data->info->n);
-}
-*/

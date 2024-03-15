@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 18:25:22 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:11:50 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 int  end_simulation(t_data *data)
 {
-    pthread_mutex_lock(&(data->info->mut));
+    pthread_mutex_lock(&(data->info->death_mut));
+    pthread_mutex_lock(&(data->info->meals_mut));
     if (data->info->dead == 0 && data->info->meals > 0)
     {
-        pthread_mutex_unlock(&(data->info->mut));
+        pthread_mutex_unlock(&(data->info->death_mut));
+        pthread_mutex_unlock(&(data->info->meals_mut));
         return (0);
     }
-    pthread_mutex_unlock(&(data->info->mut));
+    pthread_mutex_unlock(&(data->info->death_mut));
+    pthread_mutex_unlock(&(data->info->meals_mut));
     return (1);
 }
 
@@ -95,7 +98,8 @@ int	main(int argc, char **argv)
     set_info(data->info, argc, argv);
     initialize_mutexes(data);
     create_philosophers(data);
-    pthread_mutex_destroy(&(data->info->mut));
+    pthread_mutex_destroy(&(data->info->death_mut));
+    pthread_mutex_destroy(&(data->info->meals_mut));
     int i = 0;
     while (i < data->info->n)
     {

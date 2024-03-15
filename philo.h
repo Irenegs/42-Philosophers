@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 19:49:42 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:03:21 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ typedef struct s_info
 	int times;
 	int dead;
 	int	meals;
-	pthread_mutex_t	mut;
+	pthread_mutex_t	death_mut;
+	pthread_mutex_t	meals_mut;
 }		t_info;
 
 typedef struct s_philo
@@ -83,7 +84,7 @@ int    eating(t_data *data, int i);
 void    sleeping(t_data *data, int i);
 
 void	philo_died(t_data *data, int i);
-void	is_philo_dead(t_data *data, int i);
+int	is_philo_dead(t_data *data, int i);
 int  nobody_dead(t_data *data);
 int  end_simulation(t_data *data);
 
