@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   living.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:23:54 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/15 23:56:19 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,11 @@ static void take_forks(t_data *data, int i)
 int eating(t_data *data, int i)
 {
     take_forks(data, i);
-	if (end_simulation(data) == 1)
-        return (1);
+	//if (end_simulation(data) == 1)        return (1);
     display_message(data, i, EAT);
     if (since(data->philos[i].last_meal) + data->philos[i].t_eat > data->philos[i].t_die)
     {
         suspend(data->philos[i].t_die - since(data->philos[i].last_meal));
-        philo_died(data, i);
         return (1);
     }
     manage_meals(data, i);
@@ -78,16 +76,17 @@ int eating(t_data *data, int i)
     return (0);
 }
 
-void sleeping(t_data *data, int i)
+int sleeping(t_data *data, int i)
 {
     display_message(data, i, SLEEP);
     if (data->philos[i].t_die <= data->philos[i].t_sleep)
     {
         suspend(data->philos[i].t_die);
-        philo_died(data, i);
+        return (1);
     }
     suspend(data->philos[i].t_sleep);
     display_message(data, i, THINK);
     if (data->info->n % 2 == 1)
         suspend(5);
+    return (0);
 }
