@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 00:01:41 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/15 16:11:50 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,11 @@ void    *live(void *arg)
     philo = (t_philo *)arg;
     philo->t0 = now();
     data = ((t_data *)(philo->data));
-    while (1)
+    while (end_simulation(data) == 0)
     {
         if (eating(data, philo->i) == 0)
-        {
-            if (sleeping(data, philo->i) == 1)
-                break;
-        }
-        else
-            break ;
+            sleeping(data, philo->i);
     }
-    philo_died(data, philo->i);
     return (NULL);
 }
 
@@ -72,8 +66,6 @@ void    create_philosophers(t_data *data)
             printf("Fail\n");
         i++;
     }
-    while (end_simulation(data) == 0)
-        usleep(100);
     while (i > 0)
         pthread_join(data->philos[--i].id, NULL);
     free(data->philos);
