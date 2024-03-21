@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:03:21 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:45:12 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ long unsigned int	since(long int t0);
 long unsigned int	now(void);
 
 int    eating(t_data *data, int i);
-void    sleeping(t_data *data, int i);
+int    sleeping(t_data *data, int i);
+void    *live(void *arg);
 
 void	philo_died(t_data *data, int i);
 int	is_philo_dead(t_data *data, int i);

@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:35:29 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:04:02 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:23:29 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	philo_died(t_data *data, int i)
 	pthread_mutex_lock(&(data->info->death_mut));
 	data->info->dead++;
 	if (data->info->dead == 1)
+	{
+		pthread_mutex_unlock(&(data->info->death_mut));
 		display_message(data, i, DEAD);
+	}
 	pthread_mutex_unlock(&(data->info->death_mut));
 }
 
