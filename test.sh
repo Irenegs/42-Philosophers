@@ -14,5 +14,10 @@ function tester(){
 for ((i = 0; i < ${#tests[@]}; i++))
 do
     tester $i;
+	read -t 5 -n 1 key  # Read a single character within a 5-second
+	if [ $? != 0 ]; then
+			exit
+	fi
 done
 
+rm philo
