@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 21:26:44 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 20:47:14 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,3 +111,25 @@ int	main(int argc, char **argv)
     return(0);
 }
 
+/*
+- Mensajes después de muerte.
+- La simulación no termina con el número de comidas.
+- check eating and dying at the same time
+- error managing
+- n <=200, t_ >=60
+
+Tests:
+1 800 200 200 -> not eat and not die ?
+5 800 200 200 -> none should die
+5 800 200 200 7 -> none should die and stops
+4 410 200 200 -> none should die
+4 310 200 100 -> one should die ?
+2 philo with differents times to look at the death time
+
+- leaks de memoria
+- leaks de hilos
+- valgrind
+- helgrind
+- norminette
+
+*/

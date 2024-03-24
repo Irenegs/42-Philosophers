@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   living.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 21:24:45 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 20:26:42 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void manage_meals(t_data *data, int i)
 {
     //printf("Available meals %d\n", data->philos[i].meals_av);
+    data->philos[i].last_meal = now();
     if (data->philos[i].meals_av <= 0)
         return ;
     data->philos[i].meals_av--;
