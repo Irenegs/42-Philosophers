@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:36:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 20:47:14 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/25 22:18:26 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int  end_simulation(t_data *data)
     if (data->info->times == -1)
         return (0);
     pthread_mutex_lock(&(data->info->meals_mut));
-    if (data->info->meals <= 0)
+    //printf("Meals %d\n", data->info->meals);
+    if (data->info->meals == 0)
     {
         pthread_mutex_unlock(&(data->info->meals_mut));
         return (1);
@@ -59,6 +60,9 @@ void    create_philosophers(t_data *data)
     }
     while (end_simulation(data) == 0)
         usleep(100);
+    pthread_mutex_lock(&(data->info->end_mut));
+    data->info->end = 1;
+    pthread_mutex_unlock(&(data->info->end_mut));
     while (i > 0)
         pthread_join(data->philos[--i].id, NULL);
     free(data->philos);
@@ -112,8 +116,6 @@ int	main(int argc, char **argv)
 }
 
 /*
-- Mensajes después de muerte.
-- La simulación no termina con el número de comidas.
 - check eating and dying at the same time
 - error managing
 - n <=200, t_ >=60

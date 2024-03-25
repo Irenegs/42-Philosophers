@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:03 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 20:26:42 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/25 22:17:50 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 static void manage_meals(t_data *data, int i)
 {
-    //printf("Available meals %d\n", data->philos[i].meals_av);
     data->philos[i].last_meal = now();
     if (data->philos[i].meals_av <= 0)
         return ;
     data->philos[i].meals_av--;
     pthread_mutex_lock(&(data->info->meals_mut));
     data->info->meals--;
-    //printf("Meals in philo %d\n", data->info->meals);
     pthread_mutex_unlock(&(data->info->meals_mut));
 }
 
@@ -100,16 +98,17 @@ void    *live(void *arg)
     philo = (t_philo *)arg;
     philo->t0 = now();
     data = ((t_data *)(philo->data));
-    while (1)
+    while (should_continue(data) == 0)
     {
         if (eating(data, philo->i) == 0)
         {
-            if (sleeping(data, philo->i) == 1)
+            if (should_continue(data) != 0 || sleeping(data, philo->i) == 1)
                 break;
         }
         else
             break ;
     }
-    philo_died(data, philo->i);
+    if (should_continue(data) == 0)
+        philo_died(data, philo->i);
     return (NULL);
 }

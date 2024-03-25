@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 08:45:37 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 18:50:45 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:17:07 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void    set_info(t_info *info, int argc, char **argv)
     info->t_die = ft_atoi(argv[2]);
     info->t_eat = ft_atoi(argv[3]);
     info->t_sleep = ft_atoi(argv[4]);
+    info->end = 0;
     if (argc == 6)
     {
         info->times = ft_atoi(argv[5]);
@@ -59,4 +60,5 @@ void	set_philo(t_data *data, int i)
     data->philos[i].t_sleep = data->info->t_sleep;
     data->philos[i].t_eat = data->info->t_eat;
     data->philos[i].last_meal = now();
+    data->fork[i].used = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:45:12 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:29:18 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ typedef struct s_info
 	int times;
 	int dead;
 	int	meals;
+	int end;
 	pthread_mutex_t	death_mut;
 	pthread_mutex_t	meals_mut;
+	pthread_mutex_t	end_mut;
 }		t_info;
 
 typedef struct s_philo
@@ -86,7 +88,7 @@ void    *live(void *arg);
 
 void	philo_died(t_data *data, int i);
 int	is_philo_dead(t_data *data, int i);
-int  nobody_dead(t_data *data);
+int  should_continue(t_data *data);
 int  end_simulation(t_data *data);
 
 void	display_message(t_data *data, int i , int action);

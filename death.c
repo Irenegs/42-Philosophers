@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:35:29 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 20:51:08 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/25 21:20:50 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ int	is_philo_dead(t_data *data, int i)
 	return (0);
 }
 
-int	nobody_dead(t_data *data)
+int	should_continue(t_data *data)
 {
-	int	dead;
+	int	end;
 
-	pthread_mutex_lock(&(data->info->death_mut));
-	dead = data->info->dead;
-	pthread_mutex_unlock(&(data->info->death_mut));
-	return (dead);
+	pthread_mutex_lock(&(data->info->end_mut));
+	end = data->info->end;
+	pthread_mutex_unlock(&(data->info->end_mut));
+	//printf("END %d\n", end);
+	return (end);
 }
