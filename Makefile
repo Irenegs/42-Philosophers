@@ -1,10 +1,10 @@
 NAME        := philo
 
-SRC			:= living.c main.c message.c setting.c time.c utils.c validate.c death.c
+SRC			:= death.c eating.c living.c main.c message.c setting.c time.c utils.c validate.c
 
 OBJ			:= $(SRC:%.c=%.o)
 
-CC          := gcc -fsanitize=thread -g
+CC          := gcc
 CFLAGS      := -Wall -Wextra -Werror
 # -lpthread
 #-fsanitize=address -g3

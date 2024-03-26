@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:35:29 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:04:02 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:36:35 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ void	philo_died(t_data *data, int i)
 	pthread_mutex_lock(&(data->info->death_mut));
 	data->info->dead++;
 	if (data->info->dead == 1)
+	{
+		pthread_mutex_unlock(&(data->info->death_mut));
 		display_message(data, i, DEAD);
-	pthread_mutex_unlock(&(data->info->death_mut));
+	}
+	else
+		pthread_mutex_unlock(&(data->info->death_mut));
 }
 
 int	is_philo_dead(t_data *data, int i)
@@ -31,12 +35,12 @@ int	is_philo_dead(t_data *data, int i)
 	return (0);
 }
 
-int	nobody_dead(t_data *data)
+int	should_continue(t_data *data)
 {
-	int	dead;
+	int	end;
 
-	pthread_mutex_lock(&(data->info->death_mut));
-	dead = data->info->dead;
-	pthread_mutex_unlock(&(data->info->death_mut));
-	return (dead);
+	pthread_mutex_lock(&(data->info->end_mut));
+	end = data->info->end;
+	pthread_mutex_unlock(&(data->info->end_mut));
+	return (end);
 }
