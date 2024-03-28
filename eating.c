@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eating.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 18:06:54 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/26 18:07:34 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:59:15 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	eating(t_data *data, int i)
 	display_message(data, i, EAT);
 	manage_meals(data, i);
 	suspend(data->philos[i].t_eat);
-	data->philos[i].last_meal = now();
 	leave_forks(data, i);
 	return (0);
 }
