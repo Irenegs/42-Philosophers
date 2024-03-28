@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/26 18:20:11 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:09:37 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void				set_info(t_info *info, int argc, char **argv);
 void				set_philo(t_data *data, int i);
 int					initialize_mutexes(t_data *data);
 
-void				suspend(int time);
+void				suspend(int time, t_data *data);
 long unsigned int	timestamp(t_data *data);
 long unsigned int	since(long int t0);
 long unsigned int	now(void);
@@ -89,6 +89,7 @@ void				philo_died(t_data *data, int i);
 int					is_philo_dead(t_data *data, int i);
 int					should_continue(t_data *data);
 int					end_simulation(t_data *data);
+int 				nobody_died(t_data *data);
 
 void				display_message(t_data *data, int i, int action);
 #endif

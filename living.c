@@ -17,15 +17,15 @@ int	sleeping(t_data *data, int i)
 	display_message(data, i, SLEEP);
 	if (data->philos[i].t_die <= data->philos[i].t_sleep)
 	{
-		suspend(data->philos[i].t_die);
+		suspend(data->philos[i].t_die, data);
 		return (1);
 	}
-	suspend(data->philos[i].t_sleep);
+	suspend(data->philos[i].t_sleep, data);
 	if (should_continue(data) != 0)
 		return (1);
 	display_message(data, i, THINK);
 	if (data->info->n % 2 == 1)
-		suspend(5);
+		usleep(5000);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:18:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/26 18:23:50 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:22:23 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,18 @@ long unsigned int	since(long int t0)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000 - t0);
 }
 
-void	suspend(int time)
+void	suspend(int time, t_data *data)
 {
-	useconds_t	usec;
+	long unsigned int	usec;
+	long unsigned int	usec_max;
+	long unsigned int	usec_init;
 
-	usec = (long unsigned int)(time * 1000);
-	usleep(usec);
+	usec_max = (long unsigned int)time;
+	usec_init = now();
+	usec = now() - usec_init;
+	while (usec < usec_max && nobody_died(data) == 0)
+	{
+		usleep(10);
+		usec = now() - usec_init;
+	}
 }

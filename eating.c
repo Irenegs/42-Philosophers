@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 18:06:54 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/28 23:59:15 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/29 00:08:53 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	eating(t_data *data, int i)
 		return (1);
 	display_message(data, i, EAT);
 	manage_meals(data, i);
-	suspend(data->philos[i].t_eat);
+	suspend(data->philos[i].t_eat, data);
 	leave_forks(data, i);
 	return (0);
 }
