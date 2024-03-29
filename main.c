@@ -47,8 +47,6 @@ void	create_philosophers(t_data *data)
 	int	i;
 	int	ret;
 
-	if (data->info->n == 0)
-		return ;
 	data->philos = malloc(data->info->n * sizeof(t_philo));
 	if (!data->philos)
 		return ;

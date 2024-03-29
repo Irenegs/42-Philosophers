@@ -54,7 +54,7 @@ int	validate(int argc, char **argv)
 	while (i < argc)
 	{
 		n = ft_atoi(argv[i]);
-		if (arg_isint(argv[i], n) != 0 || n < 0)
+		if (arg_isint(argv[i], n) != 0 || n <= 0)
 			return (1);
 		i++;
 	}
