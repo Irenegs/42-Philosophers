@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:35:29 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/29 00:07:55 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/29 20:15:55 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_philo_dead(t_data *data, int i)
 	return (0);
 }
 
-int nobody_died(t_data *data)
+int	nobody_died(t_data *data)
 {
 	int	dead;
 

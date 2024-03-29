@@ -56,7 +56,8 @@ void	create_philosophers(t_data *data)
 	i = -1;
 	while (++i < data->info->n)
 	{
-		ret = pthread_create(&data->philos[i].id, NULL, live, &(data->philos[i]));
+		ret = pthread_create(&data->philos[i].id, \
+		NULL, live, &(data->philos[i]));
 		if (ret != 0)
 		{
 			data->info->dead = 1;
