@@ -15,13 +15,7 @@
 int	sleeping(t_data *data, int i)
 {
 	display_message(data, i, SLEEP);
-	if (data->philos[i].t_die <= data->philos[i].t_sleep)
-	{
-		suspend(data->philos[i].t_die, data);
-		return (1);
-	}
-	suspend(data->philos[i].t_sleep, data);
-	if (should_continue(data) != 0)
+	if (suspend(data->philos[i].t_sleep, data) != 0)
 		return (1);
 	display_message(data, i, THINK);
 	if (data->info->n % 2 == 1)
@@ -38,8 +32,11 @@ void	*live(void *arg)
 		return (NULL);
 	philo = (t_philo *)arg;
 	philo->t0 = now();
+	philo->last_meal = philo->t0;
+	if (philo->i % 2 == 1)
+		usleep(100);
 	data = ((t_data *)(philo->data));
-	while (should_continue(data) == 0)
+	while (should_continue(data) != 0 )
 	{
 		if (eating(data, philo->i) != 0)
 			break ;

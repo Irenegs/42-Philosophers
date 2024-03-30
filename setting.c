@@ -26,6 +26,7 @@ int	initialize_mutexes(t_data *data)
 	while (i < data->info->n)
 	{
 		pthread_mutex_init(&(data->fork[i].mut), NULL);
+		data->fork[i].used = 0;
 		i++;
 	}
 	return (0);
@@ -60,6 +61,4 @@ void	set_philo(t_data *data, int i)
 	data->philos[i].t_die = data->info->t_die;
 	data->philos[i].t_sleep = data->info->t_sleep;
 	data->philos[i].t_eat = data->info->t_eat;
-	data->philos[i].last_meal = now();
-	data->fork[i].used = 0;
 }

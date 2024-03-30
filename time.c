@@ -6,7 +6,7 @@
 /*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:18:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/30 20:28:08 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/30 19:12:51 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,19 @@ long unsigned int	since(long int t0)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000 - t0);
 }
 
-void	suspend(int time, t_data *data)
+int	suspend(int time, t_data *data)
 {
 	long unsigned int	usec_max;
-	long unsigned int	time_sleep;
-	long unsigned int	max_sleep;
+	int					ret;
 
-	max_sleep = 900;
 	usec_max = now() + (long unsigned int)time;
-	while (nobody_died(data) == 0)
+	ret = 0;
+	if ((long unsigned int)time >= data->info->t_die)
 	{
-		if (now() >= usec_max)
-			return ;
-		time_sleep = (usec_max - now()) * 1000;
-		if (time_sleep > max_sleep)
-			time_sleep = max_sleep;
-		usleep(time_sleep);
+		usec_max = now() + data->info->t_die;
+		ret = 1;
 	}
+	while (should_continue(data) == 0 && (now() < usec_max))
+		usleep(1000);
+	return (ret + should_continue(data));
 }

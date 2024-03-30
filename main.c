@@ -14,19 +14,20 @@
 
 int	end_simulation(t_data *data)
 {
-	int	check;
-
+	int	dead;
+	int	meals;
+	
 	pthread_mutex_lock(&(data->info->death_mut));
-	check = data->info->dead;
+	dead = data->info->dead;
 	pthread_mutex_unlock(&(data->info->death_mut));
-	if (check != 0)
+	if (dead != 0)
 		return (1);
 	if (data->info->times == -1)
 		return (0);
 	pthread_mutex_lock(&(data->info->meals_mut));
-	check = data->info->meals;
+	meals = data->info->meals;
 	pthread_mutex_unlock(&(data->info->meals_mut));
-	if (check == 0)
+	if (meals == 0)
 		return (1);
 	return (0);
 }
@@ -34,7 +35,7 @@ int	end_simulation(t_data *data)
 static void	simulate(t_data *data)
 {
 	while (end_simulation(data) == 0)
-		usleep(100);
+		usleep(2000);
 	pthread_mutex_lock(&(data->info->end_mut));
 	data->info->end = 1;
 	pthread_mutex_unlock(&(data->info->end_mut));
@@ -58,7 +59,9 @@ void	create_philosophers(t_data *data)
 		NULL, live, &(data->philos[i]));
 		if (ret != 0)
 		{
+			pthread_mutex_lock(&(data->info->death_mut));
 			data->info->dead = 1;
+			pthread_mutex_unlock(&(data->info->death_mut));
 			break ;
 		}
 	}
