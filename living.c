@@ -41,12 +41,9 @@ void	*live(void *arg)
 	data = ((t_data *)(philo->data));
 	while (should_continue(data) == 0)
 	{
-		if (eating(data, philo->i) == 0)
-		{
-			if (should_continue(data) != 0 || sleeping(data, philo->i) == 1)
-				break ;
-		}
-		else
+		if (eating(data, philo->i) != 0)
+			break ;
+		if (should_continue(data) != 0 || sleeping(data, philo->i) != 0)
 			break ;
 	}
 	if (should_continue(data) == 0)

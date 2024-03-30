@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:35:29 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/29 20:15:55 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/30 20:14:30 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 void	philo_died(t_data *data, int i)
 {
+	int	dead;
+
 	pthread_mutex_lock(&(data->info->death_mut));
-	data->info->dead++;
-	if (data->info->dead == 1)
-	{
-		pthread_mutex_unlock(&(data->info->death_mut));
+	dead = data->info->dead++;
+	pthread_mutex_unlock(&(data->info->death_mut));
+	if (dead == 1)
 		display_message(data, i, DEAD);
-	}
-	else
-		pthread_mutex_unlock(&(data->info->death_mut));
 }
 
 int	is_philo_dead(t_data *data, int i)

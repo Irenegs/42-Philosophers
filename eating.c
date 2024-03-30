@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eating.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 18:06:54 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/29 00:08:53 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/30 19:58:12 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,23 @@ static void	take_one_fork(t_data *data, int i, int f)
 	is_philo_dead(data, i);
 }
 
-static void	take_forks(t_data *data, int i)
+static int	take_forks(t_data *data, int i)
 {
-	while (data->philos[i].forks != 1 && is_philo_dead(data, i) == 0)
-		take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
-	while (data->philos[i].forks != 2 && is_philo_dead(data, i) == 0)
-		take_one_fork(data, i, (i + i % 2) % data->info->n);
+	while (data->philos[i].forks < 2)
+	{
+		if (data->philos[i].forks == 0)
+			take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
+		else
+			take_one_fork(data, i, (i + i % 2) % data->info->n);
+		if (is_philo_dead(data, i) != 0)
+			return (1);
+	}
+	return (0);
 }
 
 int	eating(t_data *data, int i)
 {
-	take_forks(data, i);
-	if (is_philo_dead(data, i) != 0)
+	if (take_forks(data, i) != 0)
 		return (1);
 	display_message(data, i, EAT);
 	manage_meals(data, i);

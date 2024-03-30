@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:18:06 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/29 00:22:23 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/30 20:28:08 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,19 @@ long unsigned int	since(long int t0)
 
 void	suspend(int time, t_data *data)
 {
-	long unsigned int	usec;
 	long unsigned int	usec_max;
-	long unsigned int	usec_init;
+	long unsigned int	time_sleep;
+	long unsigned int	max_sleep;
 
-	usec_max = (long unsigned int)time;
-	usec_init = now();
-	usec = now() - usec_init;
-	while (usec < usec_max && nobody_died(data) == 0)
+	max_sleep = 900;
+	usec_max = now() + (long unsigned int)time;
+	while (nobody_died(data) == 0)
 	{
-		usleep(10);
-		usec = now() - usec_init;
+		if (now() >= usec_max)
+			return ;
+		time_sleep = (usec_max - now()) * 1000;
+		if (time_sleep > max_sleep)
+			time_sleep = max_sleep;
+		usleep(time_sleep);
 	}
 }
