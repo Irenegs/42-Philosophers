@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 14:30:07 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/31 18:00:31 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,15 @@ void				set_info(t_info *info, int argc, char **argv);
 void				set_philo(t_data *data, int i);
 int					initialize_mutexes(t_data *data);
 
-int					suspend(int time, t_data *data);
+int					suspend(int time, t_data *data, int i);
 long unsigned int	timestamp(t_data *data);
 long unsigned int	since(long int t0);
 long unsigned int	now(void);
 
 int					eating(t_data *data, int i);
+int					take_forks(t_data *data, int i);
+void				leave_forks(t_data *data, int i);
+void				manage_meals(t_data *data, int i);
 int					sleeping(t_data *data, int i);
 void				*live(void *arg);
 
@@ -88,7 +91,6 @@ void				philo_died(t_data *data, int i);
 int					is_philo_dead(t_data *data, int i);
 int					should_continue(t_data *data);
 int					end_simulation(t_data *data);
-int					nobody_died(t_data *data);
 
-void				display_message(t_data *data, int i, int action);
+int				display_message(t_data *data, int i, int action);
 #endif
