@@ -6,7 +6,7 @@
 /*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/29 20:15:41 by irene            ###   ########.fr       */
+/*   Updated: 2024/03/31 14:30:07 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_philo
 	int					i;
 	int					forks;
 	void				*data;
-	long unsigned int	t0;
 	long unsigned int	t_sleep;
 	long unsigned int	t_eat;
 	long unsigned int	t_die;
@@ -76,7 +75,7 @@ void				set_info(t_info *info, int argc, char **argv);
 void				set_philo(t_data *data, int i);
 int					initialize_mutexes(t_data *data);
 
-void				suspend(int time, t_data *data);
+int					suspend(int time, t_data *data);
 long unsigned int	timestamp(t_data *data);
 long unsigned int	since(long int t0);
 long unsigned int	now(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eating.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 18:06:54 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/30 19:58:12 by irgonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 14:40:01 by irene            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,19 @@ static void	leave_forks(t_data *data, int i)
 	pthread_mutex_unlock(&(data->fork[(i + 1) % data->info->n].mut));
 }
 
-static void	take_one_fork(t_data *data, int i, int f)
+static int	take_one_fork(t_data *data, int i, int f)
 {
 	pthread_mutex_lock(&(data->fork[f].mut));
-	if (data->fork[f].used == 0)
-	{
-		data->fork[f].used = 1;
-		pthread_mutex_unlock(&(data->fork[f].mut));
-		data->philos[i].forks++;
-		display_message(data, i, FORK);
-	}
-	else
+	if (data->fork[f].used == 1)
 	{
 		pthread_mutex_unlock(&(data->fork[f].mut));
-		usleep(2);
+		return (1);
 	}
-	is_philo_dead(data, i);
+	data->fork[f].used = 1;
+	pthread_mutex_unlock(&(data->fork[f].mut));
+	data->philos[i].forks++;
+	display_message(data, i, FORK);
+	return (0);
 }
 
 static int	take_forks(t_data *data, int i)
@@ -57,10 +54,13 @@ static int	take_forks(t_data *data, int i)
 	while (data->philos[i].forks < 2)
 	{
 		if (data->philos[i].forks == 0)
-			take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n);
+		{
+			if (take_one_fork(data, i, (i + (i + 1) % 2) % data->info->n) == 0)
+				take_one_fork(data, i, (i + i % 2) % data->info->n);
+		}
 		else
 			take_one_fork(data, i, (i + i % 2) % data->info->n);
-		if (is_philo_dead(data, i) != 0)
+		if (is_philo_dead(data, i) != 0 && should_continue(data) == 0)
 			return (1);
 	}
 	return (0);
@@ -72,7 +72,13 @@ int	eating(t_data *data, int i)
 		return (1);
 	display_message(data, i, EAT);
 	manage_meals(data, i);
-	suspend(data->philos[i].t_eat, data);
+	if (data->info->t_eat >= data->info->t_die)
+	{
+		suspend(data->philos[i].t_die, data);
+		return (1);
+	}
+	if (suspend(data->philos[i].t_eat, data) != 0)
+		return (1);
 	leave_forks(data, i);
 	return (0);
 }

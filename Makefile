@@ -6,7 +6,6 @@ OBJ			:= $(SRC:%.c=%.o)
 
 CC          := gcc
 CFLAGS      := -Wall -Wextra -Werror
-# -lpthread
 #-fsanitize=address -g3
 #-fsanitize=thread -g
 
@@ -30,4 +29,3 @@ re:
 	$(MAKE) all
 
 .PHONY: clean fclean re
-.SILENT:

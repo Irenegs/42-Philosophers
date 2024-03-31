@@ -34,46 +34,47 @@ int	end_simulation(t_data *data)
 static void	simulate(t_data *data)
 {
 	while (end_simulation(data) == 0)
-		usleep(100);
+		usleep(1000);
 	pthread_mutex_lock(&(data->info->end_mut));
 	data->info->end = 1;
 	pthread_mutex_unlock(&(data->info->end_mut));
 }
 
-void	create_philosophers(t_data *data)
+int	create_philosophers(t_data *data)
 {
 	int	i;
 	int	ret;
 
 	data->philos = malloc(data->info->n * sizeof(t_philo));
 	if (!data->philos)
-		return ;
+		return (-1);
 	i = -1;
 	while (++i < data->info->n)
 		set_philo(data, i);
 	i = -1;
+	data->info->t0 = now();
 	while (++i < data->info->n)
 	{
 		ret = pthread_create(&data->philos[i].id, \
 		NULL, live, &(data->philos[i]));
 		if (ret != 0)
 		{
+			pthread_mutex_lock(&(data->info->death_mut));
 			data->info->dead = 1;
-			break ;
+			pthread_mutex_unlock(&(data->info->death_mut));
+			return (i);
 		}
 	}
-	if (i == data->info->n)
-		simulate(data);
-	while (i > 0)
-		pthread_join(data->philos[--i].id, NULL);
-	return ;
+	simulate(data);
+	return (-2);
 }
 
-static void	clear(t_data *data)
+static void	clear(t_data *data, int i)
 {
-	int	i;
-
-	free(data->philos);
+	while (i > 0)
+		pthread_join(data->philos[--i].id, NULL);
+	if (i == 0)
+		free(data->philos);
 	pthread_mutex_destroy(&(data->info->death_mut));
 	pthread_mutex_destroy(&(data->info->meals_mut));
 	pthread_mutex_destroy(&(data->info->end_mut));
@@ -91,21 +92,25 @@ static void	clear(t_data *data)
 int	main(int argc, char **argv)
 {
 	t_data	*data;
+	int		simulation_value;
 
 	if (validate(argc, argv) != 0)
 		return (1);
 	data = malloc(1 * sizeof(t_data));
 	if (!data)
-		return (2);
+		return (12);
 	data->info = malloc(1 * sizeof(t_info));
 	if (!data->info)
 	{
 		free(data);
-		return (3);
+		return (12);
 	}
 	set_info(data->info, argc, argv);
 	initialize_mutexes(data);
 	create_philosophers(data);
-	clear(data);
+	simulation_value = create_philosophers(data);
+	clear(data, simulation_value);
+	if (simulation_value != -2)
+		return (1);
 	return (0);
 }
