@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irene <irgonzal@student.42madrid.com>      +#+  +:+       +#+        */
+/*   By: irgonzal <irgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:19:12 by irgonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 18:00:31 by irene            ###   ########.fr       */
+/*   Updated: 2024/04/01 19:25:01 by irgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int					validate(int argc, char **argv);
 void				set_info(t_info *info, int argc, char **argv);
 void				set_philo(t_data *data, int i);
 int					initialize_mutexes(t_data *data);
+int					clear(t_data *data, int value);
 
 int					suspend(int time, t_data *data, int i);
 long unsigned int	timestamp(t_data *data);
@@ -92,5 +93,5 @@ int					is_philo_dead(t_data *data, int i);
 int					should_continue(t_data *data);
 int					end_simulation(t_data *data);
 
-int				display_message(t_data *data, int i, int action);
+int					display_message(t_data *data, int i, int action);
 #endif

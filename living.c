@@ -20,14 +20,20 @@ int	eating(t_data *data, int i)
 		return (1);
 	display_message(data, i, EAT);
 	manage_meals(data, i);
-	ok = suspend(data->philos[i].t_eat, data, i);
+	if (data->info->t_eat >= data->info->t_die)
+	{
+		if (suspend(data->philos[i].t_die, data, i) == 0)
+			return (1);
+		return (2);
+	}
+	else
+		ok = suspend(data->philos[i].t_eat, data, i);
 	leave_forks(data, i);
 	return (ok);
 }
 
 int	sleeping(t_data *data, int i)
 {
-	int					ok;
 	long unsigned int	since_last_meal;
 
 	display_message(data, i, SLEEP);
@@ -40,9 +46,8 @@ int	sleeping(t_data *data, int i)
 			return (1);
 		}
 	}
-	ok = suspend(data->philos[i].t_sleep, data, i);
-	if (ok != 0)
-		return (1);
+	if (suspend(data->philos[i].t_sleep, data, i) != 0)
+		return (2);
 	display_message(data, i, THINK);
 	if (data->info->n % 2 == 1)
 	{
@@ -55,6 +60,7 @@ int	sleeping(t_data *data, int i)
 int	do_philo_things(t_data *data, int i)
 {
 	long signed int	max_wait;
+	int				ret;
 
 	max_wait = data->philos[i].t_die - data->philos[i].t_eat - \
 		data->philos[i].t_sleep;
@@ -62,12 +68,14 @@ int	do_philo_things(t_data *data, int i)
 		usleep((max_wait / 2) * 1000);
 	while (1)
 	{
-		if (eating(data, i) != 0)
-			return (1);
+		ret = eating(data, i);
+		if (ret != 0)
+			return (ret);
 		if (should_continue(data) != 0)
 			return (0);
-		if (sleeping(data, i) != 0)
-			return (1);
+		ret = sleeping(data, i);
+		if (ret != 0)
+			return (ret);
 		if (should_continue(data) != 0)
 			return (0);
 	}

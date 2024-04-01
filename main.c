@@ -14,20 +14,19 @@
 
 int	end_simulation(t_data *data)
 {
-	int	dead;
-	int	meals;
+	int	check;
 
 	pthread_mutex_lock(&(data->info->death_mut));
-	dead = data->info->dead;
+	check = data->info->dead;
 	pthread_mutex_unlock(&(data->info->death_mut));
-	if (dead != 0)
+	if (check != 0)
 		return (1);
 	if (data->info->times == -1)
 		return (0);
 	pthread_mutex_lock(&(data->info->meals_mut));
-	meals = data->info->meals;
+	check = data->info->meals;
 	pthread_mutex_unlock(&(data->info->meals_mut));
-	if (meals == 0)
+	if (check == 0)
 		return (1);
 	return (0);
 }
@@ -41,14 +40,14 @@ static void	simulate(t_data *data)
 	pthread_mutex_unlock(&(data->info->end_mut));
 }
 
-void	create_philosophers(t_data *data)
+int	create_philosophers(t_data *data)
 {
 	int	i;
 	int	ret;
 
 	data->philos = malloc(data->info->n * sizeof(t_philo));
 	if (!data->philos)
-		return ;
+		return (1);
 	i = -1;
 	while (++i < data->info->n)
 		set_philo(data, i);
@@ -63,75 +62,32 @@ void	create_philosophers(t_data *data)
 			pthread_mutex_lock(&(data->info->death_mut));
 			data->info->dead = 1;
 			pthread_mutex_unlock(&(data->info->death_mut));
-			break ;
+			return (i + 2);
 		}
 	}
-	if (i == data->info->n)
-		simulate(data);
-	while (i > 0)
-		pthread_join(data->philos[--i].id, NULL);
-	return ;
-}
-
-static void	clear(t_data *data)
-{
-	int	i;
-
-	free(data->philos);
-	pthread_mutex_destroy(&(data->info->death_mut));
-	pthread_mutex_destroy(&(data->info->meals_mut));
-	pthread_mutex_destroy(&(data->info->end_mut));
-	i = 0;
-	while (i < data->info->n)
-	{
-		pthread_mutex_destroy(&(data->fork[i].mut));
-		i++;
-	}
-	free(data->fork);
-	free(data->info);
-	free(data);
+	simulate(data);
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_data	*data;
+	int		value;
 
 	if (validate(argc, argv) != 0)
 		return (1);
 	data = malloc(1 * sizeof(t_data));
 	if (!data)
-		return (2);
+		return (12);
 	data->info = malloc(1 * sizeof(t_info));
 	if (!data->info)
 	{
 		free(data);
-		return (3);
+		return (12);
 	}
 	set_info(data->info, argc, argv);
-	initialize_mutexes(data);
-	create_philosophers(data);
-	clear(data);
-	return (0);
+	value = initialize_mutexes(data);
+	if (value == 0)
+		value = create_philosophers(data);
+	return (clear(data, value));
 }
-
-/*
-- check eating and dying at the same time ./philo 3 310 104 104 => should die
-- error managing
-- n <=200, t_ >=60
-
-./philo filosofos tmorir tcomer tdormir 
-Tests:
-1 800 200 200 -> not eat and not die ?
-5 800 200 200 -> none should die
-5 800 200 200 7 -> none should die and stops
-4 410 200 200 -> none should die
-4 310 200 100 -> one should die ?
-2 philo with differents times to look at the death time
-
-- leaks de memoria
-- leaks de hilos
-- valgrind
-- helgrind
-- norminette
-
-*/
