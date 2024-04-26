@@ -12,23 +12,37 @@
 
 #include "philo.h"
 
-int	initialize_mutexes(t_data *data)
+static int	initialize_forks(t_data *data)
 {
 	int	i;
 
-	pthread_mutex_init(&(data->info->death_mut), NULL);
-	pthread_mutex_init(&(data->info->end_mut), NULL);
-	pthread_mutex_init(&(data->info->meals_mut), NULL);
 	i = 0;
-	data->fork = malloc(data->info->n * sizeof(t_fork));
-	if (!data->fork)
-		return (1);
 	while (i < data->info->n)
 	{
-		pthread_mutex_init(&(data->fork[i].mut), NULL);
+		if (pthread_mutex_init(&(data->fork[i].mut), NULL) != 0)
+			return (i);
 		data->fork[i].used = 0;
 		i++;
 	}
+	return (-1);
+}
+
+int	initialize_mutexes(t_data *data)
+{
+	int	forks_init;
+
+	if (pthread_mutex_init(&(data->info->death_mut), NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&(data->info->end_mut), NULL) != 0)
+		return (-2);
+	if (pthread_mutex_init(&(data->info->meals_mut), NULL) != 0)
+		return (-3);
+	data->fork = malloc(data->info->n * sizeof(t_fork));
+	if (!data->fork)
+		return (-4);
+	forks_init = initialize_forks(data);
+	if (forks_init != -1)
+		return (-(forks_init + 5));
 	return (0);
 }
 
